@@ -2,7 +2,8 @@
 <html lang="km">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ទប់ស្កាត់ការ Zoom ចេញចូលលើទូរស័ព្ទដៃ (Disable Auto-Zoom) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>កម្មវិធីវិភាគចំណូលចំណាយ</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,20 +17,38 @@
     <style>
         body {
             font-family: 'Kantumruy Pro', sans-serif;
+            /* ទប់ស្កាត់ការ Zoom ដោយសារការចុចផ្ទួនៗ (Double tap zoom) */
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* កំណត់ទំហំ Font របស់ Input លើអេក្រង់តូច ដើម្បីការពារ iOS Safari មិនឱ្យ Auto-Zoom ពេលចុចវាយអក្សរ */
+        input[type="number"], input[type="text"] {
+            font-size: 16px !important;
+        }
+
+        /* លុបព្រួញលើ Input លេខ (Hide Spin Buttons for Number Input) */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 pb-12 min-h-screen">
+<body class="bg-slate-50 text-slate-800 pb-12 min-h-screen select-none">
 
     <!-- Header Bar -->
     <header class="bg-white/90 border-b border-slate-200/80 sticky top-0 z-30 backdrop-blur-md">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 shrink-0">
                     <i data-lucide="compass"></i>
                 </div>
                 <div>
-                    <h1 className="text-xl font-bold text-slate-900 tracking-tight leading-tight" style="font-size: 1.25rem; font-weight: 700;">ហិរញ្ញវត្ថុខ្ញុំ</h1>
+                    <h1 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight leading-tight">ហិរញ្ញវត្ថុខ្ញុំ</h1>
                     <p class="text-xs text-slate-500">ប្រព័ន្ធវិភាគ និងបែងចែកប្រាក់ខែឆ្លាតវៃ</p>
                 </div>
             </div>
@@ -60,7 +79,7 @@
                         <i data-lucide="dollar-sign" class="w-4 h-4"></i>
                     </div>
                 </div>
-                <div id="card-income" class="text-xl sm:text-2xl font-bold text-slate-900">$1,000</div>
+                <div id="card-income" class="text-lg sm:text-2xl font-bold text-slate-900">$1,000</div>
                 <p class="text-[11px] text-slate-400 mt-1">ប្រាក់ចំណូលចូល</p>
             </div>
 
@@ -72,7 +91,7 @@
                         <i data-lucide="piggy-bank" class="w-4 h-4"></i>
                     </div>
                 </div>
-                <div id="card-savings" class="text-xl sm:text-2xl font-bold text-teal-600">$200</div>
+                <div id="card-savings" class="text-lg sm:text-2xl font-bold text-teal-600">$200</div>
                 <p id="card-savings-percent" class="text-[11px] text-teal-600/80 font-medium mt-1">20% នៃប្រាក់ខែ</p>
             </div>
 
@@ -84,7 +103,7 @@
                         <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
                     </div>
                 </div>
-                <div id="card-expenses" class="text-xl sm:text-2xl font-bold text-slate-900">$800</div>
+                <div id="card-expenses" class="text-lg sm:text-2xl font-bold text-slate-900">$800</div>
                 <p id="card-expenses-percent" class="text-[11px] text-rose-500 font-medium mt-1">80% នៃប្រាក់ខែ</p>
             </div>
 
@@ -96,7 +115,7 @@
                         <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
                     </div>
                 </div>
-                <div id="card-balance" class="text-xl sm:text-2xl font-bold">$0</div>
+                <div id="card-balance" class="text-lg sm:text-2xl font-bold">$0</div>
                 <p id="card-balance-status" class="text-[11px] text-slate-300 mt-1">ស្ថានភាពហិរញ្ញវត្ថុល្អ</p>
             </div>
         </div>
@@ -106,7 +125,7 @@
             <!-- Left Column: Inputs -->
             <div class="lg:col-span-7 space-y-6">
                 <!-- Income Input & Auto Allocation Card -->
-                <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
+                <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">
                             បញ្ចូលប្រាក់ខែសរុបរបស់អ្នក ($)
@@ -120,7 +139,7 @@
                                 value="1000"
                                 oninput="onIncomeChange()"
                                 placeholder="0.00"
-                                class="w-full pl-9 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xl font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                                class="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-lg font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                             />
                         </div>
                     </div>
@@ -128,7 +147,7 @@
                     <!-- Smart Allocation Banner -->
                     <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-indigo-50 border border-emerald-100/80 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div class="flex items-start gap-3">
-                            <div class="p-2 bg-emerald-500 text-white rounded-xl shadow-xs mt-0.5 sm:mt-0">
+                            <div class="p-2 bg-emerald-500 text-white rounded-xl shadow-xs mt-0.5 sm:mt-0 shrink-0">
                                 <i data-lucide="sparkles" class="w-4 h-4"></i>
                             </div>
                             <div>
@@ -138,7 +157,7 @@
                         </div>
                         <button
                             onclick="autoAllocate()"
-                            class="w-full sm:w-auto px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-semibold text-xs tracking-wide flex items-center justify-center gap-2 transition-all shadow-md shadow-slate-900/10 active:scale-95"
+                            class="w-full sm:w-auto px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-semibold text-xs tracking-wide flex items-center justify-center gap-2 transition-all shadow-md shadow-slate-900/10 active:scale-95 shrink-0"
                         >
                             <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
                             បែងចែកស្វ័យប្រវត្តិ
@@ -147,10 +166,10 @@
                 </div>
 
                 <!-- Expense Allocation List -->
-                <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
+                <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-4">
                         <div>
-                            <h3 class="text-lg font-bold text-slate-800">កំណត់ការចំណាយតាមផ្នែក</h3>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-800">កំណត់ការចំណាយតាមផ្នែក</h3>
                             <p class="text-xs text-slate-400">អ្នកអាចផ្លាស់ប្តូរចំនួនទឹកប្រាក់តាមជាក់ស្តែង</p>
                         </div>
                         <span class="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg">6 ប្រភេទ</span>
@@ -200,7 +219,7 @@
                 </div>
 
                 <!-- Progress Bars Break Down -->
-                <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
+                <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
                     <h3 class="text-base font-bold text-slate-800">ការបែងចែកភាគរយជាក់ស្តែង</h3>
                     <div id="progress-container" class="space-y-4">
                         <!-- Progress bars rendered via JS -->
@@ -259,7 +278,7 @@
 
             <!-- Health Assessment -->
             <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-start gap-4">
-                <div class="p-2.5 bg-emerald-500 text-white rounded-xl shadow-xs mt-0.5">
+                <div class="p-2.5 bg-emerald-500 text-white rounded-xl shadow-xs mt-0.5 shrink-0">
                     <i data-lucide="check-circle-2" class="w-5 h-5"></i>
                 </div>
                 <div class="space-y-1">
@@ -308,32 +327,34 @@
 
         // Helpers
         function getPercentage(amount) {
-            if (income <= 0) return 0;
+            if (!income || income <= 0) return '0.0';
             return ((amount / income) * 100).toFixed(1);
         }
 
         function formatCurrency(val) {
-            return '$' + Number(val).toLocaleString();
+            const num = parseFloat(val) || 0;
+            return '$' + num.toLocaleString('en-US');
         }
 
         // Events
         function onIncomeChange() {
-            const val = parseFloat(document.getElementById('input-income').value) || 0;
-            income = val;
+            const val = parseFloat(document.getElementById('input-income').value);
+            income = isNaN(val) ? 0 : val;
             updateApp();
+            renderExpenseListRecommendations();
         }
 
         function onExpenseChange(id, value) {
-            const val = parseFloat(value) || 0;
+            const val = parseFloat(value);
             const exp = expenses.find(e => e.id === id);
             if (exp) {
-                exp.amount = val;
+                exp.amount = isNaN(val) ? 0 : val;
             }
             updateApp();
         }
 
         function autoAllocate() {
-            if (income <= 0) return;
+            if (!income || income <= 0) return;
             expenses.forEach(exp => {
                 exp.amount = Math.round(income * exp.rec);
             });
@@ -342,6 +363,16 @@
         }
 
         // Render Functions
+        function renderExpenseListRecommendations() {
+            expenses.forEach(expense => {
+                const recommended = Math.round(income * expense.rec);
+                const el = document.getElementById(`rec-text-${expense.id}`);
+                if (el) {
+                    el.innerText = `$${recommended.toLocaleString('en-US')}`;
+                }
+            });
+        }
+
         function renderExpenseList() {
             const container = document.getElementById('expense-list-container');
             container.innerHTML = '';
@@ -364,7 +395,7 @@
                                     </span>
                                 </div>
                                 <p class="text-xs text-slate-400 mt-0.5">
-                                    ណែនាំ (${expense.rec * 100}%): <span class="font-semibold text-slate-600">$${recommended}</span>
+                                    ណែនាំ (${expense.rec * 100}%): <span id="rec-text-${expense.id}" class="font-semibold text-slate-600">$${recommended.toLocaleString('en-US')}</span>
                                 </p>
                             </div>
                         </div>
@@ -373,7 +404,7 @@
                             <input
                                 type="number"
                                 min="0"
-                                value="${expense.amount}"
+                                value="${expense.amount || ''}"
                                 oninput="onExpenseChange(${expense.id}, this.value)"
                                 placeholder="0"
                                 class="w-full pl-7 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
@@ -441,7 +472,7 @@
                         </div>
                     </div>
                     <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r ${exp.color} transition-all duration-500 rounded-full" style="width: ${Math.min(percent, 100)}%"></div>
+                        <div class="h-full bg-gradient-to-r ${exp.color} transition-all duration-500 rounded-full" style="width: ${Math.min(parseFloat(percent), 100)}%"></div>
                     </div>
                 `;
                 progressContainer.appendChild(barEl);
@@ -459,7 +490,7 @@
                     </span>
                 </div>
                 <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div class="h-full transition-all duration-500 rounded-full ${balance >= 0 ? 'bg-emerald-500' : 'bg-rose-500'}" style="width: ${Math.max(0, Math.min(balancePercent, 100))}%"></div>
+                    <div class="h-full transition-all duration-500 rounded-full ${balance >= 0 ? 'bg-emerald-500' : 'bg-rose-500'}" style="width: ${Math.max(0, Math.min(parseFloat(balancePercent), 100))}%"></div>
                 </div>
             `;
             progressContainer.appendChild(balanceBarEl);
