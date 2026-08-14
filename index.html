@@ -1,15 +1,41 @@
 <!DOCTYPE html>
-<html lang="km">
+<html lang="km" class="light">
 <head>
     <meta charset="UTF-8">
-    <!-- ទប់ស្កាត់ការ Zoom ចេញចូលលើទូរស័ព្ទដៃ (Disable Auto-Zoom) -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>កម្មវិធីវិភាគចំណូលចំណាយ</title>
-    <!-- Tailwind CSS CDN -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ហិរញ្ញវត្ថុខ្ញុំ - Smart Money App</title>
+    
+    <!-- PWA & Mobile App Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ហិរញ្ញវត្ថុខ្ញុំ">
+    <meta name="theme-color" content="#0f172a">
+
+    <!-- App Icon for iOS & Android -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f172a'/><path d='M30 50 L45 65 L70 35' stroke='%2310b981' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/><circle cx='50' cy='50' r='38' stroke='%2310b981' stroke-width='6' fill='none'/></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f172a'/><path d='M30 50 L45 65 L70 35' stroke='%2310b981' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/><circle cx='50' cy='50' r='38' stroke='%2310b981' stroke-width='6' fill='none'/></svg>">
+
+    <!-- Embedded Web App Manifest -->
+    <link rel="manifest" href='data:application/json,{"name":"ហិរញ្ញវត្ថុខ្ញុំ - Finance App","short_name":"ហិរញ្ញវត្ថុ","start_url":".","display":"standalone","background_color":"#0f172a","theme_color":"#0f172a","icons":[{"src":"data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" rx=\"22\" fill=\"%230f172a\"/><path d=\"M30 50 L45 65 L70 35\" stroke=\"%2310b981\" stroke-width=\"10\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\"/><circle cx=\"50\" cy=\"50\" r=\"38\" stroke=\"%2310b981\" stroke-width=\"6\" fill=\"none\"/></svg>","sizes":"512x512","type":"image/svg+xml"}]}'>
+
+    <!-- Tailwind CSS & Lucide Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        khmer: ['Kantumruy Pro', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts for Khmer -->
+    
+    <!-- Google Khmer Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -17,344 +43,317 @@
     <style>
         body {
             font-family: 'Kantumruy Pro', sans-serif;
-            /* ទប់ស្កាត់ការ Zoom ដោយសារការចុចផ្ទួនៗ (Double tap zoom) */
             touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
             -webkit-text-size-adjust: 100%;
         }
-
-        /* កំណត់ទំហំ Font របស់ Input លើអេក្រង់តូច ដើម្បីការពារ iOS Safari មិនឱ្យ Auto-Zoom ពេលចុចវាយអក្សរ */
-        input[type="number"], input[type="text"] {
+        input, select, button {
             font-size: 16px !important;
         }
-
-        /* លុបព្រួញលើ Input លេខ (Hide Spin Buttons for Number Input) */
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
         }
-        input[type=number] {
-            -moz-appearance: textfield;
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 pb-12 min-h-screen select-none">
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen pb-24 md:pb-12 transition-colors duration-200 select-none">
 
-    <!-- Header Bar -->
-    <header class="bg-white/90 border-b border-slate-200/80 sticky top-0 z-30 backdrop-blur-md">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 shrink-0">
-                    <i data-lucide="compass"></i>
+    <!-- Top Navigation App Header -->
+    <header class="bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 backdrop-blur-md pt-safe">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-xl bg-slate-900 dark:bg-emerald-500 text-emerald-400 dark:text-slate-950 flex items-center justify-center shadow-sm shrink-0">
+                    <i data-lucide="wallet" class="w-5 h-5"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight leading-tight">ហិរញ្ញវត្ថុខ្ញុំ</h1>
-                    <p class="text-xs text-slate-500">ប្រព័ន្ធវិភាគ និងបែងចែកប្រាក់ខែឆ្លាតវៃ</p>
+                    <h1 class="text-base font-bold text-slate-900 dark:text-white leading-tight">ហិរញ្ញវត្ថុខ្ញុំ</h1>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400">គ្រប់គ្រងប្រាក់ខែ & សន្សំ</p>
                 </div>
             </div>
 
-            <!-- Navigation Tabs -->
-            <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200/60">
-                <button id="btn-tab-plan" onclick="switchTab('plan')" class="flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-lg text-sm font-medium transition-all bg-white text-slate-900 shadow-xs">
-                    <i data-lucide="sliders" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline">រៀបចំផែនការ</span>
+            <!-- Top Actions: Currency & Dark Mode -->
+            <div class="flex items-center gap-2">
+                <!-- Currency Toggle -->
+                <button onclick="toggleCurrency()" class="flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 active:scale-95 transition-all">
+                    <span id="currency-label-usd" class="text-emerald-600 dark:text-emerald-400">$ USD</span>
+                    <span class="text-slate-300 dark:text-slate-600">|</span>
+                    <span id="currency-label-khr" class="opacity-50">៛ KHR</span>
                 </button>
-                <button id="btn-tab-analytics" onclick="switchTab('analytics')" class="flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900">
-                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline">វិភាគលម្អិត</span>
+
+                <!-- Dark Mode Toggle -->
+                <button onclick="toggleDarkMode()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 active:scale-95 transition-all">
+                    <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-4 pt-4 space-y-5">
+
+        <!-- Banner: Install App Prompt -->
+        <div id="pwa-install-banner" class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white p-3.5 rounded-2xl shadow-md flex items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2.5">
+                <i data-lucide="download" class="w-5 h-5 shrink-0"></i>
+                <span>ដំឡើង App នេះលើអេក្រង់ដើមទូរស័ព្ទដើម្បីប្រើប្រាស់បានលឿន និងទិន្នន័យមិនបាត់បង់!</span>
+            </div>
+            <button onclick="showInstallInstructions()" class="px-3 py-1.5 bg-white text-emerald-800 rounded-xl font-bold shrink-0 shadow-xs active:scale-95">
+                របៀបដំឡើង
+            </button>
+        </div>
 
         <!-- Dashboard Top Overview Cards -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-            <!-- Card 1: Income -->
-            <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-medium text-slate-500">ប្រាក់ខែសរុប</span>
-                    <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                        <i data-lucide="dollar-sign" class="w-4 h-4"></i>
-                    </div>
-                </div>
-                <div id="card-income" class="text-lg sm:text-2xl font-bold text-slate-900">$1,000</div>
-                <p class="text-[11px] text-slate-400 mt-1">ប្រាក់ចំណូលចូល</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs">
+                <span class="text-[11px] font-medium text-slate-400">ប្រាក់ខែសរុប</span>
+                <div id="card-income" class="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-0.5">$0</div>
             </div>
-
-            <!-- Card 2: Savings -->
-            <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-medium text-slate-500">ប្រាក់សន្សំ</span>
-                    <div class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center">
-                        <i data-lucide="piggy-bank" class="w-4 h-4"></i>
-                    </div>
-                </div>
-                <div id="card-savings" class="text-lg sm:text-2xl font-bold text-teal-600">$200</div>
-                <p id="card-savings-percent" class="text-[11px] text-teal-600/80 font-medium mt-1">20% នៃប្រាក់ខែ</p>
+            <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs">
+                <span class="text-[11px] font-medium text-slate-400">ប្រាក់សន្សំសរុប</span>
+                <div id="card-savings" class="text-base sm:text-lg font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">$0</div>
             </div>
-
-            <!-- Card 3: Expenses -->
-            <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-medium text-slate-500">ចំណាយសរុប</span>
-                    <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
-                        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                    </div>
-                </div>
-                <div id="card-expenses" class="text-lg sm:text-2xl font-bold text-slate-900">$800</div>
-                <p id="card-expenses-percent" class="text-[11px] text-rose-500 font-medium mt-1">80% នៃប្រាក់ខែ</p>
+            <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs">
+                <span class="text-[11px] font-medium text-slate-400">ចំណាយសរុប</span>
+                <div id="card-expenses" class="text-base sm:text-lg font-bold text-rose-600 dark:text-rose-400 mt-0.5">$0</div>
             </div>
-
-            <!-- Card 4: Balance -->
-            <div id="card-balance-box" class="p-4 rounded-2xl border bg-gradient-to-br from-slate-900 to-slate-800 text-white border-slate-800 transition-all">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-medium text-slate-300">ប្រាក់នៅសល់</span>
-                    <div class="w-8 h-8 rounded-lg bg-white/10 text-white flex items-center justify-center backdrop-blur-xs">
-                        <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
-                    </div>
-                </div>
-                <div id="card-balance" class="text-lg sm:text-2xl font-bold">$0</div>
-                <p id="card-balance-status" class="text-[11px] text-slate-300 mt-1">ស្ថានភាពហិរញ្ញវត្ថុល្អ</p>
+            <div id="card-balance-box" class="bg-slate-900 dark:bg-emerald-950/40 p-3.5 rounded-2xl border border-slate-800 dark:border-emerald-800/50 text-white shadow-2xs">
+                <span class="text-[11px] font-medium text-slate-400 dark:text-emerald-300/70">ប្រាក់នៅសល់</span>
+                <div id="card-balance" class="text-base sm:text-lg font-bold text-emerald-400 mt-0.5">$0</div>
             </div>
         </div>
 
-        <!-- View 1: Plan View -->
-        <div id="view-plan" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- Left Column: Inputs -->
-            <div class="lg:col-span-7 space-y-6">
-                <!-- Income Input & Auto Allocation Card -->
-                <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
+        <!-- Smart Alerts Banner Container -->
+        <div id="alert-container" class="space-y-2"></div>
+
+        <!-- APP VIEWS CONTAINER -->
+
+        <!-- Tab 1: Plan View (50/30/20 & Expense Allocator) -->
+        <div id="view-plan" class="space-y-4">
+            <!-- Income Input Card -->
+            <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs space-y-3">
+                <div class="flex items-center justify-between">
+                    <label class="text-xs font-bold text-slate-700 dark:text-slate-300">បញ្ចូលប្រាក់ខែសរុប</label>
+                    <button onclick="autoAllocate()" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 active:scale-95">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> បែងចែកស្វ័យប្រវត្តិ (50/30/20)
+                    </button>
+                </div>
+                <div class="relative">
+                    <span id="income-symbol" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">$</span>
+                    <input type="number" id="input-income" value="1000" oninput="onIncomeChange()" placeholder="0" class="w-full pl-8 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-base font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+            </div>
+
+            <!-- Expense Breakdown Categories -->
+            <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs space-y-4">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">ការបែងចែកកញ្ចប់ថវិកាតាមផ្នែក</h3>
+                <div id="expense-list-container" class="space-y-3"></div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Daily Expenses Tracker -->
+        <div id="view-tracker" class="hidden space-y-4">
+            <!-- Add Daily Expense Form -->
+            <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs space-y-3">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">កត់ត្រាចំណាយប្រចាំថ្ងៃ</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    <input type="text" id="daily-desc" placeholder="បរិយាយ (ឧ. ទិញបាយ)" class="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none">
+                    <input type="number" id="daily-amount" placeholder="ចំនួនទឹកប្រាក់" class="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none">
+                    <select id="daily-category" class="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none">
+                        <option value="1">ប្រាក់សន្សំ និងវិនិយោគ</option>
+                        <option value="2">ថ្លៃផ្ទះ ទឹក និងភ្លើង</option>
+                        <option value="3" selected>ម្ហូបអាហារប្រចាំថ្ងៃ</option>
+                        <option value="4">ថ្លៃធ្វើដំណើរ & សាំង</option>
+                        <option value="5">ការកម្សាន្ត និងទិញអីវ៉ាន់</option>
+                        <option value="6">ចំណាយផ្សេងៗ</option>
+                    </select>
+                </div>
+                <button onclick="addDailyExpense()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm active:scale-98">
+                    <i data-lucide="plus" class="w-4 h-4"></i> បន្ថែមការចំណាយ
+                </button>
+            </div>
+
+            <!-- Daily Expense History List -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs space-y-3">
+                <div class="flex justify-between items-center">
+                    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">ប្រវត្តិចំណាយជាក់ស្តែង</h4>
+                    <span id="daily-total-text" class="text-xs font-bold text-rose-600 dark:text-rose-400">$0.00</span>
+                </div>
+                <div id="daily-history-list" class="divide-y divide-slate-100 dark:divide-slate-800"></div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Savings Goals -->
+        <div id="view-goals" class="hidden space-y-4">
+            <!-- Add Goal Form -->
+            <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs space-y-3">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">បង្កើតគោលដៅសន្សំប្រាក់</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <input type="text" id="goal-title" placeholder="ឈ្មោះគោលដៅ (ឧ. ទិញម៉ូតូ)" class="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none">
+                    <input type="number" id="goal-target" placeholder="ទឹកប្រាក់គោលដៅសរុប" class="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none">
+                </div>
+                <button onclick="addGoal()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm active:scale-98">
+                    <i data-lucide="target" class="w-4 h-4"></i> បង្កើតគោលដៅ
+                </button>
+            </div>
+
+            <!-- Savings Goals List -->
+            <div id="goals-list-container" class="space-y-3"></div>
+        </div>
+
+        <!-- Tab 4: Analytics & Export -->
+        <div id="view-analytics" class="hidden space-y-4">
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs space-y-4">
+                <div class="flex items-center justify-between">
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">
-                            បញ្ចូលប្រាក់ខែសរុបរបស់អ្នក ($)
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 font-semibold">$</div>
-                            <input
-                                type="number"
-                                id="input-income"
-                                min="0"
-                                value="1000"
-                                oninput="onIncomeChange()"
-                                placeholder="0.00"
-                                class="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-lg font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
-                            />
-                        </div>
+                        <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">របាយការណ៍ហិរញ្ញវត្ថុ</h3>
+                        <p class="text-xs text-slate-400">វិភាគតាមច្បាប់ 50/30/20</p>
                     </div>
-
-                    <!-- Smart Allocation Banner -->
-                    <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-indigo-50 border border-emerald-100/80 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <div class="flex items-start gap-3">
-                            <div class="p-2 bg-emerald-500 text-white rounded-xl shadow-xs mt-0.5 sm:mt-0 shrink-0">
-                                <i data-lucide="sparkles" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-bold text-slate-800">បែងចែកតាមច្បាប់ 50/30/20</h4>
-                                <p class="text-xs text-slate-500">គណនាប្រាក់សន្សំ និងចំណាយស្វ័យប្រវត្តិ</p>
-                            </div>
-                        </div>
-                        <button
-                            onclick="autoAllocate()"
-                            class="w-full sm:w-auto px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-semibold text-xs tracking-wide flex items-center justify-center gap-2 transition-all shadow-md shadow-slate-900/10 active:scale-95 shrink-0"
-                        >
-                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                            បែងចែកស្វ័យប្រវត្តិ
-                        </button>
-                    </div>
+                    <button onclick="window.print()" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-slate-200 dark:border-slate-700 active:scale-95">
+                        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Export / Print PDF
+                    </button>
                 </div>
 
-                <!-- Expense Allocation List -->
-                <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-4">
-                        <div>
-                            <h3 class="text-base sm:text-lg font-bold text-slate-800">កំណត់ការចំណាយតាមផ្នែក</h3>
-                            <p class="text-xs text-slate-400">អ្នកអាចផ្លាស់ប្តូរចំនួនទឹកប្រាក់តាមជាក់ស្តែង</p>
-                        </div>
-                        <span class="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg">6 ប្រភេទ</span>
+                <div class="grid grid-cols-3 gap-3 text-center">
+                    <div class="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900">
+                        <p class="text-[10px] text-blue-600 dark:text-blue-400 font-bold">ចាំបាច់ (50%)</p>
+                        <p id="analytics-needs" class="text-sm font-bold text-slate-900 dark:text-white mt-1">$0</p>
                     </div>
-
-                    <div id="expense-list-container" class="space-y-4">
-                        <!-- Items rendered via JS -->
+                    <div class="p-3 rounded-xl bg-pink-50 dark:bg-pink-950/30 border border-pink-100 dark:border-pink-900">
+                        <p class="text-[10px] text-pink-600 dark:text-pink-400 font-bold">កម្សាន្ត (30%)</p>
+                        <p id="analytics-wants" class="text-sm font-bold text-slate-900 dark:text-white mt-1">$0</p>
                     </div>
-                </div>
-            </div>
-
-            <!-- Right Column: Visual Summary -->
-            <div class="lg:col-span-5 space-y-6">
-                <!-- 50/30/20 Rule Info Box -->
-                <div class="bg-slate-900 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden">
-                    <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
-                    <div class="flex items-center gap-2 text-indigo-400 text-xs font-bold tracking-wider uppercase mb-3">
-                        <i data-lucide="info" class="w-4 h-4"></i>
-                        <span>រូបមន្តគ្រប់គ្រងលុយ 50/30/20</span>
+                    <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900">
+                        <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">សន្សំ (20%)</p>
+                        <p id="analytics-savings" class="text-sm font-bold text-slate-900 dark:text-white mt-1">$0</p>
                     </div>
-                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
-                        បច្ចេកទេសគ្រប់គ្រងហិរញ្ញវត្ថុដែលជួយឱ្យអ្នកមានលុយសន្សំច្បាស់លាស់ ដោយមិនប៉ះពាល់ដល់ការរស់នៅប្រចាំថ្ងៃ៖
-                    </p>
-                    <div class="space-y-2.5">
-                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/10 text-xs">
-                            <span class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-blue-400"></span>
-                                តម្រូវការចាំបាច់
-                            </span>
-                            <span class="font-bold text-blue-300">50%</span>
-                        </div>
-                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/10 text-xs">
-                            <span class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-pink-400"></span>
-                                ចំណង់ចំណូលចិត្ត
-                            </span>
-                            <span class="font-bold text-pink-300">30%</span>
-                        </div>
-                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/10 text-xs">
-                            <span class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                                ប្រាក់សន្សំ & អនាគត
-                            </span>
-                            <span class="font-bold text-emerald-300">20%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Progress Bars Break Down -->
-                <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
-                    <h3 class="text-base font-bold text-slate-800">ការបែងចែកភាគរយជាក់ស្តែង</h3>
-                    <div id="progress-container" class="space-y-4">
-                        <!-- Progress bars rendered via JS -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- View 2: Analytics View -->
-        <div id="view-analytics" class="hidden bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-xs space-y-8">
-            <div>
-                <h3 class="text-xl font-bold text-slate-900">វិភាគរចនាសម្ព័ន្ធហិរញ្ញវត្ថុ</h3>
-                <p class="text-xs text-slate-400 mt-1">ការប្រៀបធៀបរវាងការបែងចែកជាក់ស្តែង ធៀបនឹងគោលការណ៍ 50/30/20</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Needs -->
-                <div class="p-5 rounded-2xl bg-blue-50/50 border border-blue-100 space-y-3">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-blue-700 uppercase tracking-wider">តម្រូវការចាំបាច់ (Needs)</span>
-                        <span class="text-xs font-bold px-2 py-0.5 bg-blue-100 text-blue-800 rounded-full">គោលដៅ 50%</span>
-                    </div>
-                    <div id="analytics-needs-amount" class="text-2xl font-bold text-slate-900">$500</div>
-                    <div class="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-blue-100">
-                        <span>ភាគរយបច្ចុប្បន្ន:</span>
-                        <span id="analytics-needs-percent" class="font-bold text-blue-700">50.0%</span>
-                    </div>
-                </div>
-
-                <!-- Wants -->
-                <div class="p-5 rounded-2xl bg-rose-50/50 border border-rose-100 space-y-3">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-rose-700 uppercase tracking-wider">ចំណង់ចំណូលចិត្ត (Wants)</span>
-                        <span class="text-xs font-bold px-2 py-0.5 bg-rose-100 text-rose-800 rounded-full">គោលដៅ 30%</span>
-                    </div>
-                    <div id="analytics-wants-amount" class="text-2xl font-bold text-slate-900">$300</div>
-                    <div class="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-rose-100">
-                        <span>ភាគរយបច្ចុប្បន្ន:</span>
-                        <span id="analytics-wants-percent" class="font-bold text-rose-700">30.0%</span>
-                    </div>
-                </div>
-
-                <!-- Savings -->
-                <div class="p-5 rounded-2xl bg-emerald-50/50 border border-emerald-100 space-y-3">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">ប្រាក់សន្សំ (Savings)</span>
-                        <span class="text-xs font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full">គោលដៅ 20%</span>
-                    </div>
-                    <div id="analytics-savings-amount" class="text-2xl font-bold text-slate-900">$200</div>
-                    <div class="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-emerald-100">
-                        <span>ភាគរយបច្ចុប្បន្ន:</span>
-                        <span id="analytics-savings-percent" class="font-bold text-emerald-700">20.0%</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Health Assessment -->
-            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-start gap-4">
-                <div class="p-2.5 bg-emerald-500 text-white rounded-xl shadow-xs mt-0.5 shrink-0">
-                    <i data-lucide="check-circle-2" class="w-5 h-5"></i>
-                </div>
-                <div class="space-y-1">
-                    <h4 class="text-sm font-bold text-slate-800">ការវាយតម្លៃសុខភាពហិរញ្ញវត្ថុ</h4>
-                    <p id="analytics-health-text" class="text-xs text-slate-600 leading-relaxed">
-                        អបអរសាទរ! អ្នកបានសន្សំប្រាក់លើសពី ២០% នៃប្រាក់ខែសរុប។ នេះជាទម្លាប់ហិរញ្ញវត្ថុដ៏រឹងមាំបំផុតសម្រាប់អនាគត។
-                    </p>
                 </div>
             </div>
         </div>
 
     </main>
 
-    <!-- App Logic JavaScript -->
+    <!-- Bottom Mobile App Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 border-t border-slate-200 dark:border-slate-800 backdrop-blur-lg z-50 pb-safe">
+        <div class="max-w-md mx-auto px-2 py-2 flex justify-around items-center">
+            <button onclick="switchTab('plan')" id="nav-plan" class="flex flex-col items-center gap-1 text-emerald-600 dark:text-emerald-400 font-bold">
+                <i data-lucide="sliders" class="w-5 h-5"></i>
+                <span class="text-[10px]">ផែនការ</span>
+            </button>
+            <button onclick="switchTab('tracker')" id="nav-tracker" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <i data-lucide="receipt" class="w-5 h-5"></i>
+                <span class="text-[10px]">កត់ត្រាចំណាយ</span>
+            </button>
+            <button onclick="switchTab('goals')" id="nav-goals" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <i data-lucide="target" class="w-5 h-5"></i>
+                <span class="text-[10px]">គោលដៅសន្សំ</span>
+            </button>
+            <button onclick="switchTab('analytics')" id="nav-analytics" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <i data-lucide="pie-chart" class="w-5 h-5"></i>
+                <span class="text-[10px]">វិភាគ</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Modal Instructions for Install -->
+    <div id="install-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 p-5 rounded-3xl max-w-sm w-full space-y-4 border border-slate-200 dark:border-slate-800">
+            <div class="flex justify-between items-center">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white">របៀប Add ទៅ Home Screen</h3>
+                <button onclick="closeInstallInstructions()" class="text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="text-xs text-slate-600 dark:text-slate-300 space-y-2 leading-relaxed">
+                <p><strong>📱 សម្រាប់ iPhone (Safari):</strong><br>ចុចប៊ូតុង Share <i data-lucide="share" class="w-3.5 h-3.5 inline"></i> រួចជ្រើសរើស <strong>"Add to Home Screen"</strong>។</p>
+                <p><strong>🤖 សម្រាប់ Android (Chrome):</strong><br>ចុចសញ្ញាជួរឈរ បីចំណុច <i data-lucide="more-vertical" class="w-3.5 h-3.5 inline"></i> រួចជ្រើសរើស <strong>"Add to Home screen"</strong> ឬ <strong>"Install app"</strong>។</p>
+            </div>
+            <button onclick="closeInstallInstructions()" class="w-full py-2 bg-slate-900 dark:bg-emerald-500 text-white dark:text-slate-950 font-bold rounded-xl text-xs">
+                យល់ព្រម
+            </button>
+        </div>
+    </div>
+
+    <!-- Application JavaScript Logic -->
     <script>
-        // Data State
-        let income = 1000;
+        // Currency Conversion Logic ($1 = 4100 KHR)
+        let currency = 'USD'; // 'USD' or 'KHR'
+        const EXCHANGE_RATE = 4100;
+
+        let income = 1000; // in USD
         let expenses = [
-            { id: 1, name: 'ប្រាក់សន្សំ និងវិនិយោគ', icon: 'piggy-bank', amount: 200, rec: 0.20, category: 'សន្សំ (20%)', color: 'from-emerald-500 to-teal-600', badgeBg: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-            { id: 2, name: 'ថ្លៃផ្ទះ ទឹក និងភ្លើង', icon: 'wallet', amount: 250, rec: 0.25, category: 'ចាំបាច់ (50%)', color: 'from-blue-500 to-indigo-600', badgeBg: 'bg-blue-50 text-blue-700 border-blue-200' },
-            { id: 3, name: 'ម្ហូបអាហារប្រចាំថ្ងៃ', icon: 'receipt', amount: 150, rec: 0.15, category: 'ចាំបាច់ (50%)', color: 'from-amber-500 to-orange-600', badgeBg: 'bg-amber-50 text-amber-700 border-amber-200' },
-            { id: 4, name: 'ថ្លៃធ្វើដំណើរ & សាំង', icon: 'trending-up', amount: 100, rec: 0.10, category: 'ចាំបាច់ (50%)', color: 'from-purple-500 to-violet-600', badgeBg: 'bg-purple-50 text-purple-700 border-purple-200' },
-            { id: 5, name: 'ការកម្សាន្ត និងទិញអីវ៉ាន់', icon: 'coins', amount: 200, rec: 0.20, category: 'ចំណង់ចំណូលចិត្ត (30%)', color: 'from-rose-500 to-pink-600', badgeBg: 'bg-rose-50 text-rose-700 border-rose-200' },
-            { id: 6, name: 'ចំណាយផ្សេងៗ', icon: 'pie-chart', amount: 100, rec: 0.10, category: 'ចំណង់ចំណូលចិត្ត (30%)', color: 'from-slate-500 to-gray-600', badgeBg: 'bg-slate-50 text-slate-700 border-slate-200' }
+            { id: 1, name: 'ប្រាក់សន្សំ និងវិនិយោគ', icon: 'piggy-bank', amount: 200, rec: 0.20, category: 'សន្សំ' },
+            { id: 2, name: 'ថ្លៃផ្ទះ ទឹក និងភ្លើង', icon: 'wallet', amount: 250, rec: 0.25, category: 'ចាំបាច់' },
+            { id: 3, name: 'ម្ហូបអាហារប្រចាំថ្ងៃ', icon: 'receipt', amount: 150, rec: 0.15, category: 'ចាំបាច់' },
+            { id: 4, name: 'ថ្លៃធ្វើដំណើរ & សាំង', icon: 'trending-up', amount: 100, rec: 0.10, category: 'ចាំបាច់' },
+            { id: 5, name: 'ការកម្សាន្ត និងទិញអីវ៉ាន់', icon: 'coins', amount: 200, rec: 0.20, category: 'កម្សាន្ត' },
+            { id: 6, name: 'ចំណាយផ្សេងៗ', icon: 'pie-chart', amount: 100, rec: 0.10, category: 'កម្សាន្ត' }
         ];
 
-        // Tab Switching
-        function switchTab(tab) {
-            const btnPlan = document.getElementById('btn-tab-plan');
-            const btnAnalytics = document.getElementById('btn-tab-analytics');
-            const viewPlan = document.getElementById('view-plan');
-            const viewAnalytics = document.getElementById('view-analytics');
+        let dailyExpenses = [];
+        let savingGoals = [
+            { id: 1, title: 'មូលនិធិអាសន្ន', target: 2000, saved: 600 }
+        ];
 
-            if (tab === 'plan') {
-                btnPlan.className = "flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-lg text-sm font-medium transition-all bg-white text-slate-900 shadow-xs";
-                btnAnalytics.className = "flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900";
-                viewPlan.classList.remove('hidden');
-                viewAnalytics.classList.add('hidden');
-            } else {
-                btnAnalytics.className = "flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-lg text-sm font-medium transition-all bg-white text-slate-900 shadow-xs";
-                btnPlan.className = "flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900";
-                viewAnalytics.classList.remove('hidden');
-                viewPlan.classList.add('hidden');
+        // Format Money based on active currency
+        function formatMoney(amountInUSD) {
+            if (currency === 'KHR') {
+                const khr = Math.round(amountInUSD * EXCHANGE_RATE);
+                return khr.toLocaleString('km-KH') + ' ៛';
             }
+            return '$' + Number(amountInUSD).toLocaleString('en-US');
         }
 
-        // Helpers
-        function getPercentage(amount) {
-            if (!income || income <= 0) return '0.0';
-            return ((amount / income) * 100).toFixed(1);
-        }
-
-        function formatCurrency(val) {
-            const num = parseFloat(val) || 0;
-            return '$' + num.toLocaleString('en-US');
-        }
-
-        // Events
-        function onIncomeChange() {
-            const val = parseFloat(document.getElementById('input-income').value);
-            income = isNaN(val) ? 0 : val;
+        function toggleCurrency() {
+            currency = currency === 'USD' ? 'KHR' : 'USD';
+            document.getElementById('currency-label-usd').className = currency === 'USD' ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'opacity-40';
+            document.getElementById('currency-label-khr').className = currency === 'KHR' ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'opacity-40';
+            document.getElementById('income-symbol').innerText = currency === 'USD' ? '$' : '៛';
             updateApp();
-            renderExpenseListRecommendations();
+            renderExpenseList();
+            renderDailyExpenses();
+            renderGoals();
         }
 
-        function onExpenseChange(id, value) {
-            const val = parseFloat(value);
-            const exp = expenses.find(e => e.id === id);
-            if (exp) {
-                exp.amount = isNaN(val) ? 0 : val;
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                document.getElementById('theme-icon').setAttribute('data-lucide', 'moon');
+            } else {
+                html.classList.add('dark');
+                document.getElementById('theme-icon').setAttribute('data-lucide', 'sun');
             }
+            lucide.createIcons();
+        }
+
+        // Tab Navigation
+        function switchTab(tab) {
+            ['plan', 'tracker', 'goals', 'analytics'].forEach(t => {
+                document.getElementById(`view-${t}`).classList.add('hidden');
+                const navBtn = document.getElementById(`nav-${t}`);
+                navBtn.className = "flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200";
+            });
+
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            document.getElementById(`nav-${tab}`).className = "flex flex-col items-center gap-1 text-emerald-600 dark:text-emerald-400 font-bold";
+        }
+
+        function onIncomeChange() {
+            const rawVal = parseFloat(document.getElementById('input-income').value);
+            const val = isNaN(rawVal) ? 0 : rawVal;
+            income = currency === 'KHR' ? val / EXCHANGE_RATE : val;
             updateApp();
         }
 
         function autoAllocate() {
-            if (!income || income <= 0) return;
+            if (income <= 0) return;
             expenses.forEach(exp => {
                 exp.amount = Math.round(income * exp.rec);
             });
@@ -362,161 +361,197 @@
             updateApp();
         }
 
-        // Render Functions
-        function renderExpenseListRecommendations() {
-            expenses.forEach(expense => {
-                const recommended = Math.round(income * expense.rec);
-                const el = document.getElementById(`rec-text-${expense.id}`);
-                if (el) {
-                    el.innerText = `$${recommended.toLocaleString('en-US')}`;
-                }
-            });
+        function onExpenseChange(id, value) {
+            const rawVal = parseFloat(value);
+            const val = isNaN(rawVal) ? 0 : rawVal;
+            const exp = expenses.find(e => e.id === id);
+            if (exp) {
+                exp.amount = currency === 'KHR' ? val / EXCHANGE_RATE : val;
+            }
+            updateApp();
         }
 
+        // Render Expense Allocation List
         function renderExpenseList() {
             const container = document.getElementById('expense-list-container');
             container.innerHTML = '';
 
-            expenses.forEach(expense => {
-                const recommended = Math.round(income * expense.rec);
-                const itemEl = document.createElement('div');
-                itemEl.className = "p-4 rounded-2xl border transition-all bg-white border-slate-200/80 shadow-2xs";
-                itemEl.innerHTML = `
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br ${expense.color} text-white flex items-center justify-center shadow-xs shrink-0">
-                                <i data-lucide="${expense.icon}" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <h4 class="text-sm font-bold text-slate-800">${expense.name}</h4>
-                                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full border ${expense.badgeBg}">
-                                        ${expense.category}
-                                    </span>
-                                </div>
-                                <p class="text-xs text-slate-400 mt-0.5">
-                                    ណែនាំ (${expense.rec * 100}%): <span id="rec-text-${expense.id}" class="font-semibold text-slate-600">$${recommended.toLocaleString('en-US')}</span>
-                                </p>
-                            </div>
+            expenses.forEach(exp => {
+                const displayAmt = currency === 'KHR' ? Math.round(exp.amount * EXCHANGE_RATE) : exp.amount;
+                const recAmt = Math.round(income * exp.rec);
+
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800";
+                div.innerHTML = `
+                    <div class="flex items-center gap-2.5">
+                        <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                            <i data-lucide="${exp.icon}" class="w-4 h-4"></i>
                         </div>
-                        <div class="relative w-full sm:w-36 shrink-0">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-sm font-semibold">$</div>
-                            <input
-                                type="number"
-                                min="0"
-                                value="${expense.amount || ''}"
-                                oninput="onExpenseChange(${expense.id}, this.value)"
-                                placeholder="0"
-                                class="w-full pl-7 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
-                            />
+                        <div>
+                            <p class="text-xs font-bold text-slate-800 dark:text-slate-200">${exp.name}</p>
+                            <p class="text-[10px] text-slate-400">ណែនាំ: ${formatMoney(recAmt)}</p>
                         </div>
                     </div>
+                    <input 
+                        type="number" 
+                        value="${displayAmt || ''}" 
+                        oninput="onExpenseChange(${exp.id}, this.value)"
+                        class="w-24 px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-bold text-right text-slate-900 dark:text-white focus:outline-none"
+                    />
                 `;
-                container.appendChild(itemEl);
+                container.appendChild(div);
             });
             lucide.createIcons();
         }
 
-        function updateApp() {
-            // Calculations
-            let totalSavings = 0;
-            let totalNeeds = 0;
-            let totalWants = 0;
-            let totalExpenses = 0;
+        // Daily Expense Management
+        function addDailyExpense() {
+            const desc = document.getElementById('daily-desc').value.trim();
+            const rawAmt = parseFloat(document.getElementById('daily-amount').value);
+            const catId = parseInt(document.getElementById('daily-category').value);
 
-            expenses.forEach(exp => {
-                const amt = exp.amount || 0;
-                totalExpenses += amt;
-                if (exp.id === 1) {
-                    totalSavings += amt;
-                } else if (exp.rec === 0.25 || exp.rec === 0.15 || exp.rec === 0.10) {
-                    totalNeeds += amt;
-                } else {
-                    totalWants += amt;
-                }
-            });
+            if (!desc || isNaN(rawAmt) || rawAmt <= 0) return;
 
-            const balance = income - totalExpenses;
+            const amtUSD = currency === 'KHR' ? rawAmt / EXCHANGE_RATE : rawAmt;
+            dailyExpenses.unshift({ id: Date.now(), desc, amount: amtUSD, categoryId: catId, date: new Date().toLocaleTimeString('km-KH', {hour: '2-digit', minute:'2-digit'}) });
 
-            // Update Top Cards
-            document.getElementById('card-income').innerText = formatCurrency(income);
-            document.getElementById('card-savings').innerText = formatCurrency(totalSavings);
-            document.getElementById('card-savings-percent').innerText = `${getPercentage(totalSavings)}% នៃប្រាក់ខែ`;
-            document.getElementById('card-expenses').innerText = formatCurrency(totalExpenses);
-            document.getElementById('card-expenses-percent').innerText = `${getPercentage(totalExpenses)}% នៃប្រាក់ខែ`;
+            document.getElementById('daily-desc').value = '';
+            document.getElementById('daily-amount').value = '';
 
-            const balanceBox = document.getElementById('card-balance-box');
-            document.getElementById('card-balance').innerText = formatCurrency(balance);
-            if (balance >= 0) {
-                balanceBox.className = "p-4 rounded-2xl border bg-gradient-to-br from-slate-900 to-slate-800 text-white border-slate-800 transition-all";
-                document.getElementById('card-balance-status').innerText = "ស្ថានភាពហិរញ្ញវត្ថុល្អ";
-            } else {
-                balanceBox.className = "p-4 rounded-2xl border bg-rose-500 text-white border-rose-600 transition-all";
-                document.getElementById('card-balance-status').innerText = "ចំណាយលើសប្រាក់ខែ!";
-            }
-
-            // Update Progress Bars
-            const progressContainer = document.getElementById('progress-container');
-            progressContainer.innerHTML = '';
-
-            expenses.forEach(exp => {
-                const percent = getPercentage(exp.amount);
-                const barEl = document.createElement('div');
-                barEl.className = "space-y-1.5";
-                barEl.innerHTML = `
-                    <div class="flex justify-between items-center text-xs">
-                        <span class="font-medium text-slate-700">${exp.name}</span>
-                        <div class="flex items-center gap-2">
-                            <span class="font-bold text-slate-900">${formatCurrency(exp.amount)}</span>
-                            <span class="font-semibold px-1.5 py-0.5 rounded ${exp.badgeBg}">${percent}%</span>
-                        </div>
-                    </div>
-                    <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r ${exp.color} transition-all duration-500 rounded-full" style="width: ${Math.min(parseFloat(percent), 100)}%"></div>
-                    </div>
-                `;
-                progressContainer.appendChild(barEl);
-            });
-
-            // Add Balance bar
-            const balancePercent = getPercentage(balance);
-            const balanceBarEl = document.createElement('div');
-            balanceBarEl.className = "pt-4 border-t border-slate-100";
-            balanceBarEl.innerHTML = `
-                <div class="flex justify-between items-center text-xs mb-1.5">
-                    <span class="font-bold text-slate-800">ប្រាក់នៅសល់សេរី</span>
-                    <span class="font-bold ${balance >= 0 ? 'text-emerald-600' : 'text-rose-600'}">
-                        ${formatCurrency(balance)} (${balancePercent}%)
-                    </span>
-                </div>
-                <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div class="h-full transition-all duration-500 rounded-full ${balance >= 0 ? 'bg-emerald-500' : 'bg-rose-500'}" style="width: ${Math.max(0, Math.min(parseFloat(balancePercent), 100))}%"></div>
-                </div>
-            `;
-            progressContainer.appendChild(balanceBarEl);
-
-            // Update Analytics Tab
-            document.getElementById('analytics-needs-amount').innerText = formatCurrency(totalNeeds);
-            document.getElementById('analytics-needs-percent').innerText = `${getPercentage(totalNeeds)}%`;
-
-            document.getElementById('analytics-wants-amount').innerText = formatCurrency(totalWants);
-            document.getElementById('analytics-wants-percent').innerText = `${getPercentage(totalWants)}%`;
-
-            document.getElementById('analytics-savings-amount').innerText = formatCurrency(totalSavings);
-            document.getElementById('analytics-savings-percent').innerText = `${getPercentage(totalSavings)}%`;
-
-            const savingsPercent = parseFloat(getPercentage(totalSavings));
-            const healthText = document.getElementById('analytics-health-text');
-            if (savingsPercent >= 20) {
-                healthText.innerText = "អបអរសាទរ! អ្នកបានសន្សំប្រាក់លើសពី ២០% នៃប្រាក់ខែសរុប។ នេះជាទម្លាប់ហិរញ្ញវត្ថុដ៏រឹងមាំបំផុតសម្រាប់អនាគត។";
-            } else {
-                healthText.innerText = "ការសន្សំរបស់អ្នកនៅទាបជាង ២០% នៃប្រាក់ខែនៅឡើយ។ សាកល្បងកាត់បន្ថយការចំណាយលើចំណង់ចំណូលចិត្ត ដើម្បីបន្ថែមចូលក្នុងប្រាក់សន្សំ។";
-            }
+            renderDailyExpenses();
+            updateApp();
         }
 
-        // Init App
+        function renderDailyExpenses() {
+            const list = document.getElementById('daily-history-list');
+            list.innerHTML = '';
+
+            let total = 0;
+            dailyExpenses.forEach(item => {
+                total += item.amount;
+                const div = document.createElement('div');
+                div.className = "py-2 flex items-center justify-between text-xs";
+                div.innerHTML = `
+                    <div>
+                        <p class="font-bold text-slate-800 dark:text-slate-200">${item.desc}</p>
+                        <p class="text-[10px] text-slate-400">${item.date}</p>
+                    </div>
+                    <span class="font-bold text-rose-600 dark:text-rose-400">-${formatMoney(item.amount)}</span>
+                `;
+                list.appendChild(div);
+            });
+
+            document.getElementById('daily-total-text').innerText = formatMoney(total);
+        }
+
+        // Savings Goals Management
+        function addGoal() {
+            const title = document.getElementById('goal-title').value.trim();
+            const rawTarget = parseFloat(document.getElementById('goal-target').value);
+
+            if (!title || isNaN(rawTarget) || rawTarget <= 0) return;
+
+            const targetUSD = currency === 'KHR' ? rawTarget / EXCHANGE_RATE : rawTarget;
+            savingGoals.push({ id: Date.now(), title, target: targetUSD, saved: 0 });
+
+            document.getElementById('goal-title').value = '';
+            document.getElementById('goal-target').value = '';
+
+            renderGoals();
+        }
+
+        function addMoneyToGoal(id) {
+            const goal = savingGoals.find(g => g.id === id);
+            if (!goal) return;
+            const addAmt = 50; // Add $50 / equivalent
+            goal.saved += addAmt;
+            renderGoals();
+        }
+
+        function renderGoals() {
+            const container = document.getElementById('goals-list-container');
+            container.innerHTML = '';
+
+            savingGoals.forEach(g => {
+                const percent = Math.min(100, ((g.saved / g.target) * 100).toFixed(1));
+                const div = document.createElement('div');
+                div.className = "p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-2xs space-y-2";
+                div.innerHTML = `
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-bold text-slate-800 dark:text-slate-200">${g.title}</span>
+                        <span class="font-bold text-indigo-600 dark:text-indigo-400">${formatMoney(g.saved)} / ${formatMoney(g.target)}</span>
+                    </div>
+                    <div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-indigo-500 rounded-full transition-all duration-300" style="width: ${percent}%"></div>
+                    </div>
+                    <div class="flex justify-between items-center pt-1">
+                        <span class="text-[10px] text-slate-400">សម្រេចបាន ${percent}%</span>
+                        <button onclick="addMoneyToGoal(${g.id})" class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 active:scale-95">
+                            + បន្ថែម $50
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Global App Update Loop
+        function updateApp() {
+            let totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+            let totalSavings = expenses.find(e => e.id === 1)?.amount || 0;
+            let balance = income - totalExpenses;
+
+            document.getElementById('card-income').innerText = formatMoney(income);
+            document.getElementById('card-savings').innerText = formatMoney(totalSavings);
+            document.getElementById('card-expenses').innerText = formatMoney(totalExpenses);
+            document.getElementById('card-balance').innerText = formatMoney(balance);
+
+            // Smart Alert Risk Checks
+            const alertContainer = document.getElementById('alert-container');
+            alertContainer.innerHTML = '';
+
+            if (balance < 0) {
+                alertContainer.innerHTML += `
+                    <div class="p-3 bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 rounded-xl text-xs flex items-center gap-2">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0"></i>
+                        <span><strong>ប្រុងប្រយ័ត្ន!</strong> អ្នកបានរៀបចំចំណាយលើសប្រាក់ខែសរុប!</span>
+                    </div>
+                `;
+            }
+
+            if (income > 0 && (totalSavings / income) < 0.10) {
+                alertContainer.innerHTML += `
+                    <div class="p-3 bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-xl text-xs flex items-center gap-2">
+                        <i data-lucide="info" class="w-4 h-4 shrink-0"></i>
+                        <span><strong>ការព្រមាន!</strong> ប្រាក់សន្សំរបស់អ្នកទាបជាង ១០% នៃប្រាក់ខែ។</span>
+                    </div>
+                `;
+            }
+
+            // Update Analytics Tab
+            const needs = expenses.filter(e => [2,3,4].includes(e.id)).reduce((a,b) => a + b.amount, 0);
+            const wants = expenses.filter(e => [5,6].includes(e.id)).reduce((a,b) => a + b.amount, 0);
+
+            document.getElementById('analytics-needs').innerText = formatMoney(needs);
+            document.getElementById('analytics-wants').innerText = formatMoney(wants);
+            document.getElementById('analytics-savings').innerText = formatMoney(totalSavings);
+
+            lucide.createIcons();
+        }
+
+        function showInstallInstructions() {
+            document.getElementById('install-modal').classList.remove('hidden');
+        }
+
+        function closeInstallInstructions() {
+            document.getElementById('install-modal').classList.add('hidden');
+        }
+
+        // App Initialization
         window.onload = function() {
             renderExpenseList();
+            renderDailyExpenses();
+            renderGoals();
             updateApp();
             lucide.createIcons();
         };
